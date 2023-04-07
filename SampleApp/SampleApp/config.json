@@ -1,0 +1,6 @@
+{
+  "AzDoOrgUrl": "https://dev.azure.com/{organization}",
+  "AzDoProject": "",
+  "AzDoPersonalAccessToken": "",
+  "GitHubPersonalAccessToken": ""
+}
