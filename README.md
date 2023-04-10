@@ -9,4 +9,6 @@ Sample code for using connection APIs to connection GitHub Repos to Azure Boards
 ## Notes
 
 - This is sample code on preview API's. 
-- Code is not production ready and does scale for production. For example: You are limited to 200 repos per batch request and this sample code does not check for that.
+- Sample code is not production ready and does scale for production. You will need to make adjustments to fit your environment and use case.
+
+  **For example:** You are limited to 200 repos per batch request. The sample code does not check for that.
