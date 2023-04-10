@@ -12,10 +12,13 @@ namespace SampleApp
 {
     internal class Program
     {
+        // Note: This is sample code only and it should not be using in a production environment without modification and optimization
+
         static void Main(string[] args)
         {
             ConfigHelper helper = new ConfigHelper();
 
+            // set values from config.json file
             string _ghp = helper.GitHubPersonalAccessToken;   // GitHub personal access token
             string _adop = helper.AzDoPersonalAccessToken;    // Azure DevOps personal acces token
             string _orgurl = helper.AzDoOrgUrl;               // https://dev.azure.com/{organization}
@@ -26,7 +29,7 @@ namespace SampleApp
 
             AzDo azdo_client = new AzDo(_adop, _orgurl, _project);
             
-            // get all connections
+            // get all connections from AzDo
             ApiResponses.AzDoGitHubConnections azdo_connections = azdo_client.FetchConnections();
 
             // getting connection id from first connection in list
@@ -35,9 +38,9 @@ namespace SampleApp
             // get list of repos for the given connectionId
             ApiResponses.AzDoGitHubRepos azdo_repos = azdo_client.FetchRepos(connectionId);
 
-            // get list of repos the person has access to
+            // get all the GitHub repos (from github.com) the person has access to
             GitHubRepos gh_repos = new GitHubRepos(_ghp);
-            var list = gh_repos.Fetch("{github organization to get repos from}");
+            var list = gh_repos.Fetch("{github organization to get repos from}");   //used to filter by a specific organization
 
             // building a payload to update the connection
             string payload = "{ " +
@@ -57,10 +60,10 @@ namespace SampleApp
                 " \"operationType\":\"add\" " +
                 "}";
 
-            // if we have any items to add, then continue and attempt to save
+            // if we have any items to add, then continue and attempt to post
             if (isPayload)
             {
-                ApiResponses.AzDoGitHubRepos results = azdo_client.AddRepos(connectionId, payload);
+                ApiResponses.AzDoGitHubRepos results = azdo_client.PostRepos(connectionId, payload);
             }
             else
             {

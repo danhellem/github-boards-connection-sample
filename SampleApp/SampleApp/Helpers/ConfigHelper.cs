@@ -21,6 +21,10 @@ namespace SampleApp.Helpers
             Init();
         }
 
+
+        /// <summary>
+        /// gets and sets the config values from the config.json file
+        /// </summary>
         private void Init()
         {
 

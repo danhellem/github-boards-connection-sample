@@ -24,21 +24,21 @@ namespace SampleApp.Repos
             _project = project;            
         }
 
+        /// <summary>
+        /// fetch full list of available connections
+        /// </summary>
+        /// <returns></returns>
         public ApiResponses.AzDoGitHubConnections FetchConnections()
         {
             ApiResponses.AzDoGitHubConnections result = new ApiResponses.AzDoGitHubConnections();
 
-            using (var client = new HttpClient())
-            {
-                //client.BaseAddress = new Uri(org);
+            using (var client = new HttpClient())            {
+                
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", _adop))));
-
-                //string payload = "{\"Ids\": [" + ids + "],\"destroy\": true, \"skipNotifications\": true}";
-                //HttpContent body = new StringContent(payload, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = client.GetAsync($"{_organizationUrl}/{_project}/_apis/githubconnections?api-version=7.1-preview.1").Result;
                                 
+                HttpResponseMessage response = client.GetAsync($"{_organizationUrl}/{_project}/_apis/githubconnections?api-version=7.1-preview.1").Result;                                
                 var json = response.Content.ReadAsStringAsync().Result.ToString();
 
                 result.StatusCode = response.StatusCode;
@@ -51,21 +51,22 @@ namespace SampleApp.Repos
             }
         }
 
+        /// <summary>
+        /// fetch all the connected repos for a given connection id
+        /// </summary>
+        /// <param name="connectionId">id for connection</param>
+        /// <returns></returns>
         public ApiResponses.AzDoGitHubRepos FetchRepos(string connectionId)
         {
             ApiResponses.AzDoGitHubRepos result = new ApiResponses.AzDoGitHubRepos();
 
             using (var client = new HttpClient())
             {
-                //client.BaseAddress = new Uri(org);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", _adop))));
-
-                //string payload = "{\"Ids\": [" + ids + "],\"destroy\": true, \"skipNotifications\": true}";
-                //HttpContent body = new StringContent(payload, Encoding.UTF8, "application/json");
+                                
                 HttpResponseMessage response = client.GetAsync($"{_organizationUrl}/{_project}/_apis/githubconnections/{connectionId}/repos?api-version=7.1-preview.1").Result;
-
                 var json = response.Content.ReadAsStringAsync().Result.ToString();
 
                 result.StatusCode = response.StatusCode;
@@ -78,20 +79,24 @@ namespace SampleApp.Repos
             }
         }
 
-        public ApiResponses.AzDoGitHubRepos AddRepos(string connectionId, string payload)
+        /// <summary>
+        /// post update of repos to add or remove connections by repo
+        /// </summary>
+        /// <param name="connectionId">id of connection</param>
+        /// <param name="payload">body of patch document</param>
+        /// <returns></returns>
+        public ApiResponses.AzDoGitHubRepos PostRepos(string connectionId, string payload)
         {
             ApiResponses.AzDoGitHubRepos result = new ApiResponses.AzDoGitHubRepos();
 
             using (var client = new HttpClient())
-            {
-                //client.BaseAddress = new Uri(org);
+            {                
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", _adop))));
                                 
                 HttpContent body = new StringContent(payload, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync($"{_organizationUrl}/{_project}/_apis/githubconnections/{connectionId}/repos?api-version=7.1-preview.1", body).Result;
-
                 var json = response.Content.ReadAsStringAsync().Result.ToString();
 
                 result.StatusCode = response.StatusCode;
@@ -109,5 +114,6 @@ namespace SampleApp.Repos
     {
         ApiResponses.AzDoGitHubConnections FetchConnections();
         ApiResponses.AzDoGitHubRepos FetchRepos(string connectionId);
+        ApiResponses.AzDoGitHubRepos PostRepos(string connectionId, string payload);
     }
 }

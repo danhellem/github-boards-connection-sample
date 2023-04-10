@@ -15,11 +15,20 @@ namespace SampleApp.Repos
             _ghp = ghp;
         }
 
+        /// <summary>
+        /// fetch list of all GitHub repos the person has access to
+        /// </summary>
+        /// <returns></returns>
         public IList<string> Fetch()
         {
             return Fetch(string.Empty);
         }
 
+        /// <summary>
+        /// fetch list of GitHub repos for a specific organization the person has access to
+        /// </summary>
+        /// <param name="organization"></param>
+        /// <returns></returns>
         public IList<string> Fetch(string organization)
         {
             GitHubClient client = new GitHubClient(new Octokit.ProductHeaderValue("octokit.samples"));           
