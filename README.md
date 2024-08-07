@@ -31,12 +31,10 @@ This workflow suggests that any new repos that come online in GitHub should be a
 7)	Generate body and call ReposBatch endpoint to add repos
 8)	Optional: Any items in #4 that are not in #5 can be removed using same ReposBatch endpoint.
 
-
 ### 📝 Notes
 
 - We have provided this sample code to help you with the onboard process. The code has been simplified to facilitate the learning of the APIs. The code is not ready for production and should not be used as such.
 
-- The identity using the APIs must have project admin rights.
-- Sample code is not production ready and does scale for production. You will need to make adjustments to fit your environment and use case.
-
   **For example:** You are limited to 200 repos per batch request. The sample code does not check for that.
+
+- The identity using the APIs must have project admin rights.
